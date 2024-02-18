@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const EntryContainer = styled.div`
+export const EntryContainer = styled.h3`
   display: flex;
 `;
 
