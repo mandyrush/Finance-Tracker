@@ -1,10 +1,22 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
 import "./index.css";
 import "@radix-ui/themes/styles.css";
 import { Theme } from "@radix-ui/themes";
-import App from "./App";
+import { gray, blue, red, green } from "@radix-ui/colors";
+import { ThemeProvider } from "styled-components";
+import router from "./router";
 import reportWebVitals from "./reportWebVitals";
+
+const theme = {
+  colors: {
+    ...gray,
+    ...blue,
+    ...red,
+    ...green,
+  },
+};
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -12,7 +24,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Theme>
-      <App />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </Theme>
   </React.StrictMode>
 );

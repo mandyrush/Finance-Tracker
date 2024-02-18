@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import { Card } from "@radix-ui/themes";
 
-export const WidgetContainer = styled(Card)`
-  width: 300px;
-`;
+export const WidgetContainer = styled(Card)``;
 
 export const WidgetHeader = styled.div``;
 

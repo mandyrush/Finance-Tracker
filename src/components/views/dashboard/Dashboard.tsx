@@ -1,6 +1,7 @@
 import BudgetOverview from "components/budget/views/budget-overview/BudgetOverview";
 import strings from "locals/en";
-import { Heading } from "@radix-ui/themes";
+import { Grid, Flex, Box, Heading } from "@radix-ui/themes";
+import { MainContainer } from "./styles";
 
 const {
   global: { dashboard },
@@ -8,10 +9,16 @@ const {
 
 const Dashboard = () => {
   return (
-    <div>
+    <MainContainer size="4">
       <Heading as="h1">{dashboard}</Heading>
-      <BudgetOverview />
-    </div>
+      <Grid columns="2" gap="4">
+        <Flex direction="column" gap="3">
+          <Box>
+            <BudgetOverview />
+          </Box>
+        </Flex>
+      </Grid>
+    </MainContainer>
   );
 };
 

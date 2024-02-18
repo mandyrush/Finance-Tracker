@@ -1,8 +1,9 @@
+import { NavLink } from "react-router-dom";
 import { Entry as EntryModel } from "models/entry";
 import { capitalizeFirstLetter } from "utilities/helpers";
 import strings from "locals/en";
 import Entry from "components/shared/atoms/entry/Entry";
-import { Heading } from "@radix-ui/themes";
+import { Heading, Flex } from "@radix-ui/themes";
 import {
   WidgetContainer,
   WidgetHeader,
@@ -11,7 +12,7 @@ import {
 } from "./styles";
 
 const {
-  global: { total: totalLabel },
+  global: { total: totalLabel, view },
 } = strings;
 
 export interface WidgetEntry {
@@ -60,9 +61,12 @@ const CategoriesWidget = ({ title, entries }: CategoriesWidgetProps) => {
             value={entry.value}
           />
         ))}
+        <Entry label={totalLabel} value={categoriesTotal} />
       </WidgetBody>
       <WidgetFooter>
-        <Entry label={totalLabel} value={categoriesTotal} />
+        <Flex justify="end">
+          <NavLink to="budget">{view}</NavLink>
+        </Flex>
       </WidgetFooter>
     </WidgetContainer>
   );
