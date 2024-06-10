@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import {MemoryRouter} from 'react-router-dom';
+import { MemoryRouter } from "react-router-dom";
 import CategoriesWidget from "./CategoriesWidget";
 import { Entry, EntryType, EntryFrequency } from "models/entry";
 
@@ -58,7 +58,11 @@ const budgetEntries: Entry[] = [
 ];
 
 const setup = () => {
-  render(<MemoryRouter><CategoriesWidget title={widgetTitle} entries={budgetEntries} /></MemoryRouter>);
+  render(
+    <MemoryRouter>
+      <CategoriesWidget title={widgetTitle} entries={budgetEntries} />
+    </MemoryRouter>
+  );
 };
 
 it("renders widget title", () => {

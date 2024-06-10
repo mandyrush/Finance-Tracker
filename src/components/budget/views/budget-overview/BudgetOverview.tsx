@@ -1,6 +1,5 @@
-import { useState, useEffect } from "react";
+import { useGetBudgetEntriesQuery } from "services/base";
 import CategoriesWidget from "components/shared/organisms/categories-widget/CategoriesWidget";
-import { Entry } from "models/entry";
 import strings from "locals/en";
 
 const {
@@ -8,16 +7,19 @@ const {
 } = strings;
 
 const BudgetOverview = () => {
-  const [entries, setEntries] = useState<Entry[]>([]);
+  const { data, error, isLoading } = useGetBudgetEntriesQuery();
 
-  // @TODO - make api call to get budget information
-  useEffect(() => {
-    fetch('/budgetEntries')
-      .then((res) => res.json())
-      .then((res) => setEntries(res));
-  }, []);
-
-  return <CategoriesWidget title={budget} entries={entries} />;
+  return (
+    <div>
+      {error ? (
+        <p>Oops there was an error!</p>
+      ) : isLoading ? (
+        <p>Loading...</p>
+      ) : data ? (
+        <CategoriesWidget title={budget} entries={data} />
+      ) : null}
+    </div>
+  );
 };
 
 export default BudgetOverview;
