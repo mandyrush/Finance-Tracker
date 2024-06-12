@@ -3,7 +3,7 @@ import { formatToCurrency } from 'utilities/helpers';
 import CategoryEntryRows from 'components/shared/molecules/category-entry-rows/CategoryEntryRows';
 import { Table, Strong } from '@radix-ui/themes';
 import strings from 'locals/en';
-import { TableContainer, RowTotal } from './styles';
+import { RowTotal } from './styles';
 
 const {
     global: { actions, amount, grandTotal },
@@ -42,42 +42,36 @@ const CategoryEntriesTable = ({ tableData }: CategoryEntriesTableProps) => {
     );
 
     return (
-        <TableContainer>
-            <Table.Root variant="surface">
-                <Table.Header>
-                    <Table.Row>
-                        <Table.ColumnHeaderCell>{item}</Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>
-                            {amount}
-                        </Table.ColumnHeaderCell>
-                        <Table.ColumnHeaderCell>
-                            {actions}
-                        </Table.ColumnHeaderCell>
-                    </Table.Row>
-                </Table.Header>
-                <Table.Body>
-                    {sortedCategories.map((category) => (
-                        <CategoryEntryRows
-                            key={category}
-                            entries={categoryEntries(category)}
-                            category={category}
-                            sumEntries={sumEntries}
-                            sortEntries={sortEntries}
-                        />
-                    ))}
+        <Table.Root variant="surface">
+            <Table.Header>
+                <Table.Row>
+                    <Table.ColumnHeaderCell>{item}</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell>{amount}</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell>{actions}</Table.ColumnHeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {sortedCategories.map((category) => (
+                    <CategoryEntryRows
+                        key={category}
+                        entries={categoryEntries(category)}
+                        category={category}
+                        sumEntries={sumEntries}
+                        sortEntries={sortEntries}
+                    />
+                ))}
 
-                    <RowTotal>
-                        <Table.RowHeaderCell>
-                            <Strong>{grandTotal}</Strong>
-                        </Table.RowHeaderCell>
-                        <Table.Cell justify="end">
-                            <Strong>{sumEntries(tableData)}</Strong>
-                        </Table.Cell>
-                        <Table.Cell />
-                    </RowTotal>
-                </Table.Body>
-            </Table.Root>
-        </TableContainer>
+                <RowTotal>
+                    <Table.RowHeaderCell>
+                        <Strong>{grandTotal}</Strong>
+                    </Table.RowHeaderCell>
+                    <Table.Cell justify="end">
+                        <Strong>{sumEntries(tableData)}</Strong>
+                    </Table.Cell>
+                    <Table.Cell />
+                </RowTotal>
+            </Table.Body>
+        </Table.Root>
     );
 };
 

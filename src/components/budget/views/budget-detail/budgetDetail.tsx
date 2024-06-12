@@ -1,7 +1,18 @@
 import { useGetBudgetEntriesQuery } from 'services/base';
 import CategoryEntriesTable from 'components/shared/organisms/category-entries-table/CategoryEntriesTable';
+import ExpenseForm from 'components/budget/organisms/expense-form/ExpenseForm';
+import CategoryForm from 'components/budget/organisms/category-form/CategoryForm';
+import PaymentMethodForm from 'components/budget/organisms/payment-method-form/PaymentMethodForm';
+import FrequencyForm from 'components/budget/organisms/frequency-form/FrequencyForm';
 import EmptyState from 'components/shared/atoms/empty-state/EmptyState';
-import { Container, Heading, Card, Skeleton } from '@radix-ui/themes';
+import {
+    Container,
+    Flex,
+    Box,
+    Heading,
+    Card,
+    Skeleton,
+} from '@radix-ui/themes';
 import strings from 'locals/en';
 
 const {
@@ -24,12 +35,35 @@ const BudgetDetail = () => {
     }
 
     return (
-        <Container>
+        <Container pt="6" pb="6">
             <Heading as="h1">{budgetDetail}</Heading>
             {!data.length ? (
                 <EmptyState message="No Results" />
             ) : (
-                <CategoryEntriesTable tableData={data} />
+                <Flex gap="6">
+                    <Box width="100%">
+                        <CategoryEntriesTable tableData={data} />
+                    </Box>
+                    <Box width="450px">
+                        <Flex direction="column" gap="6">
+                            <Box>
+                                <ExpenseForm />
+                            </Box>
+
+                            <Box>
+                                <CategoryForm />
+                            </Box>
+
+                            <Box>
+                                <PaymentMethodForm />
+                            </Box>
+
+                            <Box>
+                                <FrequencyForm />
+                            </Box>
+                        </Flex>
+                    </Box>
+                </Flex>
             )}
         </Container>
     );
