@@ -1,8 +1,9 @@
 import { Entry } from 'models/entry';
+import { formatToCurrency } from 'utilities/helpers';
 import CategoryEntryRows from 'components/shared/molecules/category-entry-rows/CategoryEntryRows';
 import { Table, Strong } from '@radix-ui/themes';
 import strings from 'locals/en';
-import { TableContainer } from './styles';
+import { TableContainer, RowTotal } from './styles';
 
 const {
     global: { actions, amount, grandTotal },
@@ -19,10 +20,11 @@ const CategoryEntriesTable = ({ tableData }: CategoryEntriesTableProps) => {
     };
 
     const sumEntries = (entries: Entry[]) => {
-        return entries?.reduce(
+        const total = entries?.reduce(
             (accumulator, current) => accumulator + current.amount,
             0
         );
+        return formatToCurrency(total);
     };
 
     const sortEntries = (entries: Entry[]) => {
@@ -64,14 +66,15 @@ const CategoryEntriesTable = ({ tableData }: CategoryEntriesTableProps) => {
                         />
                     ))}
 
-                    <Table.Row>
+                    <RowTotal>
                         <Table.RowHeaderCell>
                             <Strong>{grandTotal}</Strong>
                         </Table.RowHeaderCell>
-                        <Table.Cell>
-                            <Strong>{`$${sumEntries(tableData)}`}</Strong>
+                        <Table.Cell justify="end">
+                            <Strong>{sumEntries(tableData)}</Strong>
                         </Table.Cell>
-                    </Table.Row>
+                        <Table.Cell />
+                    </RowTotal>
                 </Table.Body>
             </Table.Root>
         </TableContainer>
