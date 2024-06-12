@@ -5,7 +5,7 @@ export const budgetEntries = [
     2001,
     {
       id: 2001,
-      name: "Car",
+      name: "Car Insurance",
       amount: 150.0,
       category: "car",
       entryType: EntryType.Budget,

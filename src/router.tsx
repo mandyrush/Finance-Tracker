@@ -5,7 +5,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import ErrorPage from "components/views/error-page/errorPage";
-import { BudgetDetail } from "components/budget/views/budget-detail/budgetDetail";
+import BudgetDetail from "components/budget/views/budget-detail/budgetDetail";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
