@@ -1,5 +1,6 @@
 import { useGetBudgetEntriesQuery } from 'services/base';
 import CategoryEntriesTable from 'components/shared/organisms/category-entries-table/CategoryEntriesTable';
+import EmptyState from 'components/shared/atoms/empty-state/EmptyState';
 import { Container, Heading, Card, Skeleton } from '@radix-ui/themes';
 import strings from 'locals/en';
 
@@ -26,7 +27,7 @@ const BudgetDetail = () => {
         <Container>
             <Heading as="h1">{budgetDetail}</Heading>
             {!data.length ? (
-                <div>No Results</div>
+                <EmptyState message="No Results" />
             ) : (
                 <CategoryEntriesTable tableData={data} />
             )}
