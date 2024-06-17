@@ -1,3 +1,7 @@
+export enum EntriesApiTag {
+    Entries = 'Entries',
+}
+
 export enum EntryType {
     Asset = 'Asset',
     Debt = 'Debt',

@@ -9,20 +9,16 @@ const {
 } = strings;
 
 interface CategoryEntryRowsProps {
-    entries: Entry[];
     category: string;
-    sumEntries: (entries: Entry[]) => string;
-    sortEntries: (entries: Entry[]) => Entry[];
+    entries: Entry[];
+    entriesTotal: string;
 }
 
 const CategoryEntryRows = ({
-    entries,
     category,
-    sumEntries,
-    sortEntries,
+    entries,
+    entriesTotal,
 }: CategoryEntryRowsProps) => {
-    const sortedEntries = sortEntries(entries);
-
     return (
         <>
             <Table.Row>
@@ -31,7 +27,7 @@ const CategoryEntryRows = ({
                 </RowHeader>
             </Table.Row>
 
-            {sortedEntries?.map(({ id, name, amount }) => (
+            {entries?.map(({ id, name, amount }) => (
                 <Table.Row key={id}>
                     <Table.RowHeaderCell>{name}</Table.RowHeaderCell>
                     <Table.Cell justify="end">
@@ -46,7 +42,7 @@ const CategoryEntryRows = ({
                     <Strong>{total}</Strong>
                 </Table.RowHeaderCell>
                 <Table.Cell justify="end">
-                    <Strong>{sumEntries(sortedEntries)}</Strong>
+                    <Strong>{entriesTotal}</Strong>
                 </Table.Cell>
             </Table.Row>
         </>

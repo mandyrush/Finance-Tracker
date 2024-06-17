@@ -5,44 +5,46 @@ import CategoryForm from 'components/budget/organisms/category-form/CategoryForm
 import PaymentMethodForm from 'components/budget/organisms/payment-method-form/PaymentMethodForm';
 import FrequencyForm from 'components/budget/organisms/frequency-form/FrequencyForm';
 import EmptyState from 'components/shared/atoms/empty-state/EmptyState';
-import {
-    Container,
-    Flex,
-    Box,
-    Heading,
-    Card,
-    Skeleton,
-} from '@radix-ui/themes';
+import Loader from 'components/shared/atoms/loader/Loader';
+import ErrorCallout from 'components/shared/atoms/error-callout/ErrorCallout';
+import { Container, Flex, Box, Heading } from '@radix-ui/themes';
+import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import strings from 'locals/en';
 
 const {
-    budget: { budgetDetail },
+    budget: {
+        budgetDetail,
+        callouts: { fetchBudgetDetailFail },
+        emptyState: { message, description },
+    },
 } = strings;
 
 const BudgetDetail = () => {
     const { data = [], error, isLoading } = useGetBudgetEntriesQuery();
 
-    if (error) {
-        return (
-            <Card>
-                <p>Oops, there was an error!</p>
-            </Card>
-        );
-    }
-
-    if (isLoading) {
-        return <Skeleton width="100%" />;
-    }
-
     return (
-        <Container pt="6" pb="6">
-            <Heading as="h1">{budgetDetail}</Heading>
-            {!data.length ? (
-                <EmptyState message="No Results" />
-            ) : (
+        <>
+            {/* @TODO - move the error callout to a centralized location */}
+            {error && (
+                <ErrorCallout
+                    message={fetchBudgetDetailFail}
+                    icon={<ExclamationTriangleIcon />}
+                />
+            )}
+            <Container pt="6" pb="6">
+                <Heading as="h1">{budgetDetail}</Heading>
                 <Flex gap="6">
                     <Box width="100%">
-                        <CategoryEntriesTable tableData={data} />
+                        {isLoading ? (
+                            <Loader />
+                        ) : !data.length ? (
+                            <EmptyState
+                                message={message}
+                                description={description}
+                            />
+                        ) : (
+                            <CategoryEntriesTable tableData={data} />
+                        )}
                     </Box>
                     <Box width="450px">
                         <Flex direction="column" gap="6">
@@ -64,8 +66,8 @@ const BudgetDetail = () => {
                         </Flex>
                     </Box>
                 </Flex>
-            )}
-        </Container>
+            </Container>
+        </>
     );
 };
 

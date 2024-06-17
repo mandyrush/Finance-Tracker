@@ -1,4 +1,5 @@
-import { Card, Heading, Text } from '@radix-ui/themes';
+import { Heading, Text } from '@radix-ui/themes';
+import { EmptyStateContainer } from './styles';
 
 interface EmptyStateProps {
     message: string;
@@ -7,14 +8,14 @@ interface EmptyStateProps {
 
 const EmptyState = ({ message, description }: EmptyStateProps) => {
     return (
-        <Card>
+        <EmptyStateContainer>
             <Heading as="h3" size="3" align="center">
                 {message}
             </Heading>
             <Text as="p" size="2" align="center">
                 {description}
             </Text>
-        </Card>
+        </EmptyStateContainer>
     );
 };
 

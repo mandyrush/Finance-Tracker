@@ -54,10 +54,9 @@ const CategoryEntriesTable = ({ tableData }: CategoryEntriesTableProps) => {
                 {sortedCategories.map((category) => (
                     <CategoryEntryRows
                         key={category}
-                        entries={categoryEntries(category)}
                         category={category}
-                        sumEntries={sumEntries}
-                        sortEntries={sortEntries}
+                        entries={sortEntries(categoryEntries(category))}
+                        entriesTotal={sumEntries(categoryEntries(category))}
                     />
                 ))}
 

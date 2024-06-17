@@ -1,14 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Entry, EntryType } from 'models/entry';
+import { Entry, EntryType, EntriesApiTag } from 'models/entry';
 
 export const baseApi = createApi({
     reducerPath: 'baseApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000' }),
-    tagTypes: ['Entries'],
+    tagTypes: [EntriesApiTag.Entries],
     endpoints: (builder) => ({
         getBudgetEntries: builder.query<Entry[], void>({
             query: () => 'budget-entries',
-            providesTags: ['Entries'],
+            providesTags: [EntriesApiTag.Entries],
         }),
         createBudgetEntry: builder.mutation<
             void,
@@ -34,7 +34,7 @@ export const baseApi = createApi({
                     paymentMethod,
                 },
             }),
-            invalidatesTags: ['Entries'],
+            invalidatesTags: [EntriesApiTag.Entries],
         }),
     }),
 });
