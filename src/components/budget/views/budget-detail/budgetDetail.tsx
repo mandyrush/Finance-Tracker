@@ -6,9 +6,8 @@ import PaymentMethodForm from 'components/budget/organisms/payment-method-form/P
 import FrequencyForm from 'components/budget/organisms/frequency-form/FrequencyForm';
 import EmptyState from 'components/shared/atoms/empty-state/EmptyState';
 import Loader from 'components/shared/atoms/loader/Loader';
-import ErrorCallout from 'components/shared/atoms/error-callout/ErrorCallout';
+import AlertCallout from 'components/shared/atoms/alert-callout/AlertCallout';
 import { Container, Flex, Box, Heading } from '@radix-ui/themes';
-import { ExclamationTriangleIcon } from '@radix-ui/react-icons';
 import strings from 'locals/en';
 
 const {
@@ -25,12 +24,7 @@ const BudgetDetail = () => {
     return (
         <>
             {/* @TODO - move the error callout to a centralized location */}
-            {error && (
-                <ErrorCallout
-                    message={fetchBudgetDetailFail}
-                    icon={<ExclamationTriangleIcon />}
-                />
-            )}
+            {error && <AlertCallout message={fetchBudgetDetailFail} />}
             <Container pt="6" pb="6">
                 <Heading as="h1">{budgetDetail}</Heading>
                 <Flex gap="6">

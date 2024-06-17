@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { NavLink } from 'react-router-dom';
 import { Entry as EntryModel } from 'models/entry';
 import { capitalizeFirstLetter } from 'utilities/helpers';
@@ -27,26 +28,30 @@ interface CategoriesWidgetProps {
 }
 
 const CategoriesWidget = ({ title, entries }: CategoriesWidgetProps) => {
-    const categoryEntries = entries.reduce((accumulator, current) => {
-        const categoryIndex = accumulator.findIndex(
-            (category) => category.label === current.category
-        );
-        if (categoryIndex === -1) {
-            accumulator.push({
-                id: current.id,
-                label: current.category,
-                value: current.amount,
-            });
-        } else {
-            accumulator[categoryIndex].value += current.amount;
-        }
-        return accumulator;
-    }, [] as WidgetEntry[]);
+    const categoryEntries = useMemo(() => {
+        return entries.reduce((accumulator, current) => {
+            const categoryIndex = accumulator.findIndex(
+                (category) => category.label === current.category
+            );
+            if (categoryIndex === -1) {
+                accumulator.push({
+                    id: current.id,
+                    label: current.category,
+                    value: current.amount,
+                });
+            } else {
+                accumulator[categoryIndex].value += current.amount;
+            }
+            return accumulator;
+        }, [] as WidgetEntry[]);
+    }, [entries]);
 
-    const categoriesTotal = categoryEntries.reduce((accumulator, current) => {
-        accumulator += current.value;
-        return accumulator;
-    }, 0);
+    const categoriesTotal = useMemo(() => {
+        return categoryEntries.reduce((accumulator, current) => {
+            accumulator += current.value;
+            return accumulator;
+        }, 0);
+    }, [categoryEntries]);
 
     return (
         <WidgetContainer>

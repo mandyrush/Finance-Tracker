@@ -4,6 +4,9 @@ import { EntryFrequency } from 'models/entry';
 import { useCreateBudgetEntryMutation } from 'services/base';
 import FormLabel from 'components/shared/atoms/form-label/FormLabel';
 import { FormError } from 'components/shared/atoms/form-label/styles';
+import AlertCallout from 'components/shared/atoms/alert-callout/AlertCallout';
+import Loader from 'components/shared/atoms/loader/Loader';
+import { InfoCircledIcon } from '@radix-ui/react-icons';
 import {
     Card,
     Heading,
@@ -12,6 +15,25 @@ import {
     Select,
     Button,
 } from '@radix-ui/themes';
+import strings from 'locals/en';
+
+const {
+    global: { amount, category, dueDate, frequency, name, paymentMethod, save },
+    budget: {
+        addExpense,
+        callouts: { createBudgetEntryFailure, createBudgetEntrySuccess },
+        validation: {
+            enterAnAmount,
+            enterDueDate,
+            mustBeANumber,
+            mustBeThirtyCharacters,
+            nameRequired,
+            selectCategory,
+            selectFrequency,
+            selectPaymentMethod,
+        },
+    },
+} = strings;
 
 interface FormValues {
     name: string;
@@ -23,8 +45,7 @@ interface FormValues {
 }
 
 const ExpenseForm = () => {
-    const [createEntry, { isLoading, isError }] =
-        useCreateBudgetEntryMutation();
+    const [createEntry, { isLoading }] = useCreateBudgetEntryMutation();
 
     const initialValues: FormValues = {
         name: '',
@@ -36,30 +57,36 @@ const ExpenseForm = () => {
     };
 
     const validationSchema = object({
-        name: string()
-            .max(30, 'Must be 30 characters or less')
-            .required('Please enter a name for this expense'),
-        amount: number()
-            .typeError('Must be a number')
-            .required('Please enter an amount'),
-        category: string().required('Please select a category'),
-        frequency: string().required('Please select a frequency'),
-        dueDate: string().required('Please enter a due date'),
-        paymentMethod: string().required('Please select a payment method'),
+        name: string().max(30, mustBeThirtyCharacters).required(nameRequired),
+        amount: number().typeError(mustBeANumber).required(enterAnAmount),
+        category: string().required(selectCategory),
+        frequency: string().required(selectFrequency),
+        dueDate: string().required(enterDueDate),
+        paymentMethod: string().required(selectPaymentMethod),
     });
 
     return (
         <Card>
             <Heading as="h2" size="3">
-                Add Expense
+                {addExpense}
             </Heading>
+
+            {isLoading && <Loader />}
 
             <Formik
                 initialValues={initialValues}
                 validationSchema={validationSchema}
                 onSubmit={async (values, { resetForm }) => {
-                    await createEntry(values);
-                    resetForm();
+                    try {
+                        await createEntry(values);
+                        <AlertCallout
+                            message={createBudgetEntrySuccess}
+                            icon={<InfoCircledIcon />}
+                        />;
+                        resetForm();
+                    } catch (e) {
+                        <AlertCallout message={createBudgetEntryFailure} />;
+                    }
                 }}
             >
                 {({
@@ -73,7 +100,7 @@ const ExpenseForm = () => {
                     <Form>
                         <Flex direction="column" gap="3" maxWidth="300px">
                             <Flex direction="column">
-                                <FormLabel labelFor="name">Name</FormLabel>
+                                <FormLabel labelFor="name">{name}</FormLabel>
                                 <TextField.Root
                                     radius="large"
                                     id="name"
@@ -89,7 +116,9 @@ const ExpenseForm = () => {
                             </Flex>
 
                             <Flex direction="column">
-                                <FormLabel labelFor="amount">Amount</FormLabel>
+                                <FormLabel labelFor="amount">
+                                    {amount}
+                                </FormLabel>
                                 <TextField.Root
                                     radius="large"
                                     id="amount"
@@ -106,7 +135,7 @@ const ExpenseForm = () => {
 
                             <Flex direction="column">
                                 <FormLabel labelFor="category">
-                                    Category
+                                    {category}
                                 </FormLabel>
                                 <Select.Root
                                     size="2"
@@ -139,7 +168,7 @@ const ExpenseForm = () => {
 
                             <Flex direction="column">
                                 <FormLabel labelFor="frequency">
-                                    Frequency
+                                    {frequency}
                                 </FormLabel>
                                 <Select.Root
                                     size="2"
@@ -172,7 +201,7 @@ const ExpenseForm = () => {
 
                             <Flex direction="column">
                                 <FormLabel labelFor="dueDate">
-                                    Due Date
+                                    {dueDate}
                                 </FormLabel>
                                 <TextField.Root
                                     radius="large"
@@ -190,7 +219,7 @@ const ExpenseForm = () => {
 
                             <Flex direction="column">
                                 <FormLabel labelFor="paymentMethod">
-                                    Payment Method
+                                    {paymentMethod}
                                 </FormLabel>
                                 <Select.Root
                                     size="2"
@@ -234,7 +263,7 @@ const ExpenseForm = () => {
                                 radius="large"
                                 color="grass"
                             >
-                                Save
+                                {save}
                             </Button>
                         </Flex>
                     </Form>

@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import { Entry } from 'models/entry';
 import { formatToCurrency } from 'utilities/helpers';
 import CategoryEntryRows from 'components/shared/molecules/category-entry-rows/CategoryEntryRows';
@@ -15,31 +16,40 @@ interface CategoryEntriesTableProps {
 }
 
 const CategoryEntriesTable = ({ tableData }: CategoryEntriesTableProps) => {
-    const categoryEntries = (category: string) => {
-        return tableData.filter((entry) => entry.category === category);
-    };
+    const categoryEntries = useCallback(
+        (category: string) => {
+            return tableData.filter((entry) => entry.category === category);
+        },
+        [tableData]
+    );
 
-    const sumEntries = (entries: Entry[]) => {
+    const sumEntries = useCallback((entries: Entry[]) => {
         const total = entries?.reduce(
             (accumulator, current) => accumulator + current.amount,
             0
         );
         return formatToCurrency(total);
-    };
+    }, []);
 
-    const sortEntries = (entries: Entry[]) => {
+    const sortEntries = useCallback((entries: Entry[]) => {
         return entries.sort((a, b) =>
             a.name.toLowerCase().localeCompare(b.name.toLowerCase())
         );
-    };
+    }, []);
 
-    const categoryArray = tableData?.map?.(({ category }) => category);
+    const categoryArray = useMemo(() => {
+        return tableData?.map?.(({ category }) => category);
+    }, [tableData]);
 
-    const categories = Array.from(new Set(categoryArray));
+    const categories = useMemo(() => {
+        return Array.from(new Set(categoryArray));
+    }, [categoryArray]);
 
-    const sortedCategories = categories.sort((a, b) =>
-        a.toLowerCase().localeCompare(b.toLowerCase())
-    );
+    const sortedCategories = useMemo(() => {
+        return categories.sort((a, b) =>
+            a.toLowerCase().localeCompare(b.toLowerCase())
+        );
+    }, [categories]);
 
     return (
         <Table.Root variant="surface">
